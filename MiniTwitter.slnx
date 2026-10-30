@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="backend/MiniTwitter.Api/MiniTwitter.Api.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,105 @@
+
+# ==========================================
+# MiniTwitter - Git Ignore
+# Backend: ASP.NET Core
+# Frontend: Next.js
+# ==========================================
+
+
+# ==========================================
+# .NET / ASP.NET Core
+# ==========================================
+
+**/bin/
+**/obj/
+**/TestResults/
+
+*.user
+*.suo
+*.rsuser
+
+
+# ==========================================
+# Next.js / React / Node.js
+# ==========================================
+
+**/node_modules/
+**/.next/
+**/out/
+**/build/
+**/dist/
+**/.turbo/
+**/.vercel/
+**/coverage/
+
+*.tsbuildinfo
+next-env.d.ts
+
+
+# ==========================================
+# Variáveis de ambiente
+# ==========================================
+
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+
+# ==========================================
+# Configurações locais do .NET
+# ==========================================
+
+appsettings.Development.json
+appsettings.Production.json
+appsettings.*.local.json
+
+
+# ==========================================
+# Chaves, certificados e credenciais
+# ==========================================
+
+*.pfx
+*.p12
+*.pem
+*.key
+*.snk
+*.publishsettings
+
+
+# ==========================================
+# Arquivos de banco de dados local
+# ==========================================
+
+*.mdf
+*.ldf
+
+
+# ==========================================
+# Logs
+# ==========================================
+
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# ==========================================
+# IDEs e editores
+# ==========================================
+
+.vs/
+.vscode/
+.idea/
+
+
+# ==========================================
+# Arquivos do sistema operacional
+# ==========================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
