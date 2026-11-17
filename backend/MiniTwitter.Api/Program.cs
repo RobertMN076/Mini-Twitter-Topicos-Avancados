@@ -8,17 +8,17 @@ using MiniTwitter.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Controllers
+
 builder.Services.AddControllers();
 
-// Banco de dados SQL Server
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
 
-// ASP.NET Identity
+
 builder.Services.AddIdentityCore<Usuario>(options =>
 {
     options.User.RequireUniqueEmail = true;
@@ -38,7 +38,7 @@ builder.Services.AddIdentityCore<Usuario>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddSignInManager();
 
-// Configuração JWT
+
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException(
         "Configure Jwt:Key nos User Secrets."
@@ -48,7 +48,7 @@ var signingKey = new SymmetricSecurityKey(
     Convert.FromBase64String(jwtKey)
 );
 
-// Autenticação JWT Bearer
+
 builder.Services.AddAuthentication(
     JwtBearerDefaults.AuthenticationScheme
 )
@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(
 {
     options.MapInboundClaims = false;
 
-    // Validação do token
+
     options.TokenValidationParameters =
         new TokenValidationParameters
         {
@@ -73,8 +73,7 @@ builder.Services.AddAuthentication(
             ClockSkew = TimeSpan.Zero
         };
 
-    // Verificar se o usuário ainda existe
-    // e se o token continua válido
+
     options.Events = new JwtBearerEvents
     {
         OnTokenValidated = async context =>
@@ -85,7 +84,7 @@ builder.Services.AddAuthentication(
             var stamp = context.Principal?
                 .FindFirst("security_stamp")?.Value;
 
-            // Verifica se o token contém os dados necessários
+
             if (!Guid.TryParse(id, out var usuarioId) ||
                 string.IsNullOrEmpty(stamp))
             {
@@ -93,18 +92,17 @@ builder.Services.AddAuthentication(
                 return;
             }
 
-            // Obtém o serviço de gerenciamento de usuários
+
             var userManager = context.HttpContext
                 .RequestServices
                 .GetRequiredService<UserManager<Usuario>>();
 
-            // Procura o usuário no banco de dados
+
             var usuario = await userManager.FindByIdAsync(
                 usuarioId.ToString()
             );
 
-            // Verifica se o usuário existe e se o
-            // SecurityStamp corresponde ao token
+
             if (usuario == null ||
                 stamp != await userManager.GetSecurityStampAsync(usuario))
             {
@@ -114,10 +112,10 @@ builder.Services.AddAuthentication(
     };
 });
 
-// Autorização
+
 builder.Services.AddAuthorization();
 
-// CORS - Permite comunicação com o Next.js
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
@@ -128,17 +126,17 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Construção da aplicação
+
 var app = builder.Build();
 
-// Middlewares
+
 app.UseCors("Frontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Rotas da API
+
 app.MapControllers();
 
-// Iniciar aplicação
+
 app.Run();

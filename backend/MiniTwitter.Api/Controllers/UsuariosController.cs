@@ -32,7 +32,7 @@ public class UsuariosController : ControllerBase
             usuarioId.ToString());
     }
 
-    // EDITAR PERFIL
+
     [HttpPut("me")]
     public async Task<IActionResult> AtualizarPerfil(
         [FromBody] AtualizarPerfilDto dto)
@@ -63,7 +63,7 @@ public class UsuariosController : ControllerBase
         });
     }
 
-    // ALTERAR SENHA
+
     [HttpPut("me/senha")]
     public async Task<IActionResult> AlterarSenha(
         [FromBody] AlterarSenhaDto dto)
@@ -94,7 +94,7 @@ public class UsuariosController : ControllerBase
         });
     }
 
-    // EXCLUIR A PRÓPRIA CONTA
+
     [HttpDelete("me")]
     public async Task<IActionResult> ExcluirConta(
         [FromBody] ExcluirContaDto dto)

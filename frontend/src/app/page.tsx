@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 
@@ -24,7 +25,7 @@ type Postagem = {
 const API = process.env.NEXT_PUBLIC_API_URL;
 const MAX_IMAGEM = 5 * 1024 * 1024;
 
-// Exibe imagens usando o token JWT
+
 function ImagemPostagem({
   id,
   versao,
@@ -65,7 +66,7 @@ function ImagemPostagem({
         urlCriada = URL.createObjectURL(blob);
         setUrl(urlCriada);
       } catch {
-        // A imagem pode estar indisponível.
+        
       }
     }
 
@@ -90,8 +91,7 @@ function ImagemPostagem({
   }
 
   return (
-    // URL temporária criada a partir da resposta autenticada
-    // eslint-disable-next-line @next/next/no-img-element
+
     <img
       src={url}
       alt="Imagem da publicação"
@@ -101,15 +101,16 @@ function ImagemPostagem({
 }
 
 export default function Home() {
+  const router = useRouter();
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [postagens, setPostagens] = useState<Postagem[]>([]);
 
-  // Nova postagem
+
   const [texto, setTexto] = useState("");
   const [imagem, setImagem] = useState<File | null>(null);
   const [inputKey, setInputKey] = useState(0);
 
-  // Edição
+
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const [textoEdicao, setTextoEdicao] = useState("");
   const [imagemEdicao, setImagemEdicao] = useState<File | null>(null);
@@ -125,7 +126,7 @@ export default function Home() {
     const token = sessionStorage.getItem("token");
 
     if (!token) {
-      setCarregando(false);
+      router.replace("/login");
       return;
     }
 
@@ -153,7 +154,7 @@ export default function Home() {
           resPostagens.status === 401
         ) {
           sessionStorage.removeItem("token");
-          setAviso("Sessão expirada. Faça login novamente.");
+          router.replace("/login");
           return;
         }
 
@@ -182,9 +183,9 @@ export default function Home() {
     carregarDados();
 
     return () => controller.abort();
-  }, []);
+  }, [router]);
 
-  // Comunicação autenticada com a API
+
   async function requisicao<T = unknown>(
     rota: string,
     options: RequestInit = {}
@@ -249,7 +250,7 @@ export default function Home() {
     setVersaoImagens((v) => v + 1);
   }
 
-  // CREATE
+
   async function publicar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -289,7 +290,7 @@ export default function Home() {
     }
   }
 
-  // Iniciar edição
+
   function iniciarEdicao(postagem: Postagem) {
     setEditandoId(postagem.id);
     setTextoEdicao(postagem.texto);
@@ -298,7 +299,7 @@ export default function Home() {
     setErro("");
   }
 
-  // UPDATE
+
   async function salvarEdicao(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -339,7 +340,7 @@ export default function Home() {
     }
   }
 
-  // DELETE
+
   async function excluirPostagem(id: string) {
     if (!window.confirm("Deseja excluir esta postagem?")) {
       return;
@@ -370,6 +371,8 @@ export default function Home() {
     setUsuario(null);
     setPostagens([]);
     setAviso("Você saiu da conta.");
+
+    router.replace("/login")
   }
 
   function formatarData(data: string) {
@@ -426,7 +429,7 @@ export default function Home() {
           </section>
         ) : (
           <div className="space-y-6">
-            {/* Criar postagem */}
+
             <section className="rounded-xl border border-zinc-800 p-5">
               <h2 className="mb-2 text-xl font-semibold">
                 Olá, {usuario.nome}!

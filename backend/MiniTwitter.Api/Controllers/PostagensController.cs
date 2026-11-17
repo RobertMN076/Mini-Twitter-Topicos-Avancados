@@ -28,7 +28,7 @@ public class PostagensController : ControllerBase
             : null;
     }
 
-    // Validar formato real do arquivo
+
     private static string? DetectarTipo(byte[] dados)
     {
         if (dados.Length >= 8 &&
@@ -79,7 +79,7 @@ public class PostagensController : ControllerBase
         return (dados, tipo, null);
     }
 
-    // GET: api/postagens
+
     [HttpGet]
     public async Task<IActionResult> Listar()
     {
@@ -103,7 +103,7 @@ public class PostagensController : ControllerBase
         return Ok(postagens);
     }
 
-    // GET: api/postagens/{id}/imagem
+
     [HttpGet("{id:guid}/imagem")]
     public async Task<IActionResult> ObterImagem(Guid id)
     {
@@ -131,7 +131,7 @@ public class PostagensController : ControllerBase
         );
     }
 
-    // POST: api/postagens
+
     [HttpPost]
     [Consumes("multipart/form-data")]
     [RequestSizeLimit(6 * 1024 * 1024)]
@@ -190,7 +190,7 @@ public class PostagensController : ControllerBase
         });
     }
 
-    // PUT: api/postagens/{id}
+
     [HttpPut("{id:guid}")]
     [Consumes("multipart/form-data")]
     [RequestSizeLimit(6 * 1024 * 1024)]
@@ -264,7 +264,7 @@ public class PostagensController : ControllerBase
         });
     }
 
-    // DELETE: api/postagens/{id}
+
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Excluir(Guid id)
     {
